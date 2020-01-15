@@ -3,11 +3,12 @@ from colorama import Fore, Style
 import time
 import itertools
 
-def red_text(text):
+
+def red_text(text: str):
     return f"{Fore.RED}{text}{Style.RESET_ALL}"
 
 
-def simil(carac1, carac2):
+def simil(carac1: str, carac2: str):
     """
     détermine si les deux carctères sont identiques et renvoie le poids associé
     """
@@ -18,7 +19,7 @@ def simil(carac1, carac2):
 
 
 class Ruler:
-    def __init__(self, string1, string2):
+    def __init__(self, string1: str, string2: str):
         self.string1 = string1
         self.string2 = string2
         self.d = -1
@@ -39,13 +40,12 @@ class Ruler:
             F[i, 0] = self.d*i
         for j in range(n):
             F[0, j] = self.d*j
-        for i,j in itertools.product(range(1,m),range(1,n)):
+        for i, j in itertools.product(range(1, m), range(1, n)):
 
-                F[i, j] = max( F[i, j-1] + self.d, F[i-1, j] + self.d,F[i-1, j-1] + simil(self.string1[i], self.string2[j]))
+            F[i, j] = max(F[i, j-1] + self.d, F[i-1, j] + self.d,
+                          F[i-1, j-1] + simil(self.string1[i], self.string2[j]))
 
         self.mat_F = F
-
-
 
     def dist(self):
         """
@@ -62,12 +62,12 @@ class Ruler:
         align2 = ""
         i = len(string1)-1
         j = len(string2)-1
-        while j > 0 and i > 0: # condition d'arret
+        while j > 0 and i > 0:  # condition d'arret
             score = mat_F[i, j]
-            # Extraction des poids pour les actions possibles pour ce nouveau caractère 
+            # Extraction des poids pour les actions possibles pour ce nouveau caractère
             scorediag = mat_F[i-1, j-1]
             scoreUp = mat_F[i, j-1]
-            scoreLeft = mat_F[i-1, j] 
+            scoreLeft = mat_F[i-1, j]
             # Calcul de la solution optimale
             if score == scorediag + simil(string1[i], string2[j]):
                 if simil(string1[i], string2[j]) != 0:
@@ -87,18 +87,18 @@ class Ruler:
                 align2 = string2[j] + align2
                 j = j-1
         # Finir l'alignement
-        if i == j: # il reste une lettre 
+        if i == j:  # il reste une lettre
             if simil(string1[i], string2[j]) != 0:
                 distance += 1
             align1 = string1[i] + align1
             align2 = string2[j] + align2
         else:
-            while i >= 0: # Compléter l'alignement 2 avec des '='
+            while i >= 0:  # Compléter l'alignement 2 avec des '='
                 distance += 1
                 align1 = string1[i] + align1
                 align2 = '=' + align2
                 i = i-1
-            while j >= 0: # Compléter l'alignement 1 avec des '='
+            while j >= 0:  # Compléter l'alignement 1 avec des '='
                 distance += 1
                 align1 = '='+align1
                 align2 = string2[j] + align2
@@ -114,7 +114,6 @@ class Ruler:
         self.Mat_F()
 
         self.dist()
-       
 
     def report(self):
         """

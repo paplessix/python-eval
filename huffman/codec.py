@@ -92,7 +92,7 @@ class TreeBuilder:
             node = Node(nodeL, nodeR)
             tree.append(node)
             # insert the node at the right place in term of sorted weight
-            working_nodes.insert(index_pos(working_nodes, node.weight), node) 
+            working_nodes.insert(index_pos(working_nodes, node.weight), node)
         return tree
 
 
@@ -188,7 +188,7 @@ class Codec:
             # On enregistre la longueurde la dernière découpe pour
             # Pouvoir reconstruire le message
             longueur = len(encoded[(fin+1)*8:])
-            Numbers.append(number)  
+            Numbers.append(number)
             Numbers.append(longueur)
         encoded_bin = pack('B'*len(Numbers), *Numbers)
         return encoded_bin

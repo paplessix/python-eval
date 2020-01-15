@@ -8,38 +8,40 @@ from ruler import Ruler
 import sys
 
 
-def iter_rule(datfile):
+def iter_rule(datfile: '.txt'):
     """
     itérateur qui parcoure le fichier texte et 
     effectue la comparaison de chaine sur les deux premières lignes qu'il trouve
     """
-    with open(datfile,'r') as f:
+    with open(datfile, 'r') as f:
         string1 = ""
         string2 = ""
-        for line in f :
-            if line == '' or line ==' ' or line == '\n':
+        for line in f:
+            if line == '' or line == ' ' or line == '\n':
                 pass
             elif string1 == '':
                 string1 = line
             elif string2 == '':
                 string2 = line
 
-                ruler = Ruler(string1,string2)
+                ruler = Ruler(string1, string2)
                 string1, string2 = '', ''
                 ruler.compute()
-                top,bottom = ruler.report()
+                top, bottom = ruler.report()
 
                 yield ruler.distance, top, bottom
 
-def affichage(datfile):
+
+def affichage(datfile: '.txt'):
     """
     Fonction de rendu des chaines
     """
-    for number, tuples in enumerate(iter_rule(datfile),1):
-        dist,top,bottom = tuples
+    for number, tuples in enumerate(iter_rule(datfile), 1):
+        dist, top, bottom = tuples
         print(f"====== example # {number} - distance = {dist}")
         print(top)
         print(bottom)
+
 
 def main():
 
@@ -48,8 +50,6 @@ def main():
         affichage(datafile)
     return 0
 
+
 if __name__ == '__main__':
     sys.exit(main())
-
-
-    
