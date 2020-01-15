@@ -40,8 +40,8 @@ for rang in range(300):
     compress_binary.append(sys.getsizeof(codec.encode(texte)) /
              sys.getsizeof(codec.encode_bin(texte)))
 plt.title('Facteurs de compression')
-plt.plot(I, N, label = " facteur de compression par Codec.encode" )
-plt.plot(I, B, label = " facteur de compression de l'algorithme de Huffman")
-plt.plot(I, C, label = " facteur de compression d'une str encoded  en binaire ")
+plt.plot(Rang, compress_encode, label = " facteur de compression par Codec.encode" )
+plt.plot(Rang, compress_huffman, label = " facteur de compression de l'algorithme de Huffman")
+plt.plot(Rang, compress_binary, label = " facteur de compression d'une str encoded  en binaire ")
 plt.legend()
 

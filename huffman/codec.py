@@ -5,7 +5,7 @@ and Codec that create an object that code and decode text
 
 """
 
-from struct import *
+from struct import pack, unpack
 import sys
 
 
