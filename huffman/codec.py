@@ -44,13 +44,16 @@ def deci_bin(decimal: int, size=8):
     It fills it with zeros in order to reach the asked size 
     """
     bin = ''
-    while decimal != 0:
-        reste = decimal % 2  # permet d'avoir le reste de la division
-        bin = str(reste) + bin  # permet de concaténer les deux chaines
-        decimal = decimal//2
-    while len(bin) < size:  # réajuste la taille de la chaine de caractère
-        bin = '0'+bin
-    return bin
+    if size == 0: # Cas où le texte encodé est d'une longuer multiple de 8
+        return ''
+    else :
+        while decimal != 0:
+            reste = decimal % 2  # permet d'avoir le reste de la division
+            bin = str(reste) + bin  # permet de concaténer les deux chaines
+            decimal = decimal//2
+        while len(bin) < size:  # réajuste la taille de la chaine de caractère
+            bin = '0'+bin
+        return bin
 
 
 class Node:
@@ -128,7 +131,7 @@ class Codec:
     root = property(root_finder)
 
     def dic_builder(self):
-        """ Module that builts the translate dic
+        """ Module that builds the translate dic
         """
         dic = {}
         walk = ''
@@ -170,10 +173,6 @@ class Codec:
     def encode_bin(self, text: str):
         """function that encode according to huffman algorithm 
         from string to binary
-        Parameters
-            - str
-        Return :
-            - bytes
         """
         Numbers = []
         encoded = self.encode(text)
@@ -182,7 +181,8 @@ class Codec:
             Numbers.append(number)
         fin = len(encoded)//8 - 1
         if encoded[(fin+1)*8:] == '':
-            pass
+            Numbers.append(0)
+            Numbers.append(0)
         else:
             number = int(encoded[(fin+1)*8:], base=2)
             # On enregistre la longueurde la dernière découpe pour
@@ -196,10 +196,6 @@ class Codec:
     def decode_bin(self, encoded_bin: bytes):
         """function that encode according to huffman algorithm 
         from binary to string
-        Parameters
-            - bytes
-        Return :
-            - str
         """
         encoded_deci = unpack('B'*len(encoded_bin), encoded_bin)
         encoded = ''
