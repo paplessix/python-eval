@@ -3,7 +3,7 @@ Execute the codec Module, and verify if it's working
 """
 
 from codec import TreeBuilder, Codec
-import sys 
+import sys
 import matplotlib.pyplot as plt
 
 text = "a dead dad ceded a bad babe a beaded abaca bed"
@@ -27,18 +27,21 @@ print(f"{text}\n{encoded}")
 if decoded != text:
     print("OOPS")
 text = 'ab'
-I=[]
-N=[]
-B = []
-C = []
-for rang in range(500):
+Rang = []
+compress_encode = []
+compress_huffman = []
+compress_binary = []
+for rang in range(300):
     texte = text*rang
     taille = sys.getsizeof(texte)
-    I.append(rang)
-    N.append(taille / sys.getsizeof(codec.encode(texte)))
-    B.append(taille/sys.getsizeof(codec.encode_bin(texte)))
-    C.append(sys.getsizeof(codec.encode(texte))/sys.getsizeof(codec.encode_bin(texte)))
-plt.plot(I,N)
-plt.plot(I,B)
-plt.plot(I,C)
-print(I)
+    Rang.append(rang)
+    compress_encode.append(taille / sys.getsizeof(codec.encode(texte)))
+    compress_huffman.append(taille/sys.getsizeof(codec.encode_bin(texte)))
+    compress_binary.append(sys.getsizeof(codec.encode(texte)) /
+             sys.getsizeof(codec.encode_bin(texte)))
+plt.title('Facteurs de compression')
+plt.plot(I, N, label = " facteur de compression par Codec.encode" )
+plt.plot(I, B, label = " facteur de compression de l'algorithme de Huffman")
+plt.plot(I, C, label = " facteur de compression d'une str encoded  en binaire ")
+plt.legend()
+

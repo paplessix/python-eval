@@ -1,12 +1,16 @@
 import numpy as np
 from colorama import Fore, Style
 import time
+import itertools
 
 def red_text(text):
     return f"{Fore.RED}{text}{Style.RESET_ALL}"
 
 
 def simil(carac1, carac2):
+    """
+    détermine si les deux carctères sont identiques et renvoie le poids associé
+    """
     if carac1 == carac2:
         return 0
     else:
@@ -20,25 +24,33 @@ class Ruler:
         self.d = -1
 
     def Mat_F(self):
+        """
+        Constructiond de la matrice F
+        """
 
-        string1 = self.string1
-        string2 = self.string2
-        d = self.d
+        self.string1
+        self.string2
+        self.d
 
-        F = np.zeros((len(string1), len(string2)))
-        for i in range(len(string1)):
-            F[i, 0] = d*i
-        for j in range(len(string2)):
-            F[0, j] = d*j
-        for i in range(1, len(string1)):
-            for j in range(1, len(string2)):
-                choice1 = F[i-1, j-1] + simil(string1[i], string2[j])
-                choice2 = F[i-1, j] + d
-                choice3 = F[i, j-1] + d
-                F[i, j] = max(choice1, choice2, choice3)
+        F = np.zeros((len(self.string1), len(self.string2)))
+        m, n = F.shape
+
+        for i in range(m):
+            F[i, 0] = self.d*i
+        for j in range(n):
+            F[0, j] = self.d*j
+        for i,j in itertools.product(range(1,m),range(1,n)):
+
+                F[i, j] = max( F[i, j-1] + self.d, F[i-1, j] + self.d,F[i-1, j-1] + simil(self.string1[i], self.string2[j]))
+
         self.mat_F = F
 
+
+
     def dist(self):
+        """
+        Algorithme de calcul de l'alignement optimal
+        """
         string1 = self.string1
         string2 = self.string2
         d = self.d
@@ -50,11 +62,13 @@ class Ruler:
         align2 = ""
         i = len(string1)-1
         j = len(string2)-1
-        while j > 0 and i > 0:
+        while j > 0 and i > 0: # condition d'arret
             score = mat_F[i, j]
+            # Extraction des poids pour les actions possibles pour ce nouveau caractère 
             scorediag = mat_F[i-1, j-1]
             scoreUp = mat_F[i, j-1]
-            scoreLeft = mat_F[i-1, j]
+            scoreLeft = mat_F[i-1, j] 
+            # Calcul de la solution optimale
             if score == scorediag + simil(string1[i], string2[j]):
                 if simil(string1[i], string2[j]) != 0:
                     distance += 1
@@ -72,37 +86,40 @@ class Ruler:
                 align1 = '=' + align1
                 align2 = string2[j] + align2
                 j = j-1
-
-        if i == j:
+        # Finir l'alignement
+        if i == j: # il reste une lettre 
             if simil(string1[i], string2[j]) != 0:
                 distance += 1
             align1 = string1[i] + align1
             align2 = string2[j] + align2
         else:
-            while i >= 0:
+            while i >= 0: # Compléter l'alignement 2 avec des '='
                 distance += 1
                 align1 = string1[i] + align1
                 align2 = '=' + align2
                 i = i-1
-            while j >= 0:
+            while j >= 0: # Compléter l'alignement 1 avec des '='
                 distance += 1
                 align1 = '='+align1
                 align2 = string2[j] + align2
                 j = j-1
+
+        # Création des nouveaux attributs
         setattr(Ruler, 'align1', align1)
         setattr(Ruler, 'align2', align2)
         setattr(Ruler, 'distance', distance)
 
     def compute(self):
-        a = time.time()
+
         self.Mat_F()
-        b = time.time()
+
         self.dist()
-        c= time.time()
-        print('mat_F',b-a)
-        print('dist',c-b)
+       
 
     def report(self):
+        """
+        Renvoie les chaines coloréees à interpréter par le terminal
+        """
         top = ""
         bottom = ""
         for a, b in zip(self.align1, self.align2):
