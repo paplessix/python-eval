@@ -16,21 +16,22 @@ def simil(carac1: str, carac2: str):
         return 0
     else:
         return -1   # Possibilité d'attribuer une variable à fixer plutôt que un entier dans
-                    # Une optique de plus de modularité. ( Les rentrer en paramètres d'appels de la fonction)
-                    # A plus de dimensions, on pourrait utiliser une table de de correspondance
-                    # Entre un couple d'entrée et un un poids associé. Ex : Dictionnaire de dictionnaires
+        # Une optique de plus de modularité. ( Les rentrer en paramètres d'appels de la fonction)
+        # A plus de dimensions, on pourrait utiliser une table de de correspondance
+        # Entre un couple d'entrée et un un poids associé. Ex : Dictionnaire de dictionnaires
+
 
 class Ruler:
     def __init__(self, string1: str, string2: str):
         self.string1 = string1
         self.string2 = string2
-        self.d = -1 # On pourrait introduire la valeur de d en argument du constructeur pour plus de modularité
-    
+        self.d = -1  # On pourrait introduire la valeur de d en argument du constructeur pour plus de modularité
+
     def get_distance_too_soon(self):
-        raise AttributeError( "Vous n'avez pas encore execute compute")
+        raise AttributeError("Vous n'avez pas encore execute compute")
 
     distance = property(get_distance_too_soon)
-    
+
     def Mat_F(self):
         """
         Construction de la matrice F
@@ -38,7 +39,7 @@ class Ruler:
 
         self.string1
         self.string2
-        self.d 
+        self.d
 
         F = np.zeros((len(self.string1), len(self.string2)))
         m, n = F.shape

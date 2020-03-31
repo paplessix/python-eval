@@ -44,9 +44,9 @@ def deci_bin(decimal: int, size=8):
     It fills it with zeros in order to reach the asked size 
     """
     bin = ''
-    if size == 0: # Cas où le texte encodé est d'une longuer multiple de 8
+    if size == 0:  # Cas où le texte encodé est d'une longuer multiple de 8
         return ''
-    else :
+    else:
         while decimal != 0:
             reste = decimal % 2  # permet d'avoir le reste de la division
             bin = str(reste) + bin  # permet de concaténer les deux chaines
@@ -88,7 +88,7 @@ class TreeBuilder:
         tree = []
         for carac, weight in self.caracs:
             tree.append(Leaf(carac, weight))
-        tree = sorted(tree, key=lambda value: value.weight) # keep it sorted
+        tree = sorted(tree, key=lambda value: value.weight)  # keep it sorted
         working_nodes = sorted(tree, key=lambda value: value.weight)
         while len(working_nodes) > 1:
             nodeL = working_nodes.pop(0)
@@ -136,7 +136,7 @@ class Codec:
         """
         dic = {}
         walk = ''
-        parcours(self.root, walk, dic) # lancement construction dictionnaire
+        parcours(self.root, walk, dic)  # lancement construction dictionnaire
         return dic
 
     dic = property(dic_builder)
@@ -165,11 +165,11 @@ class Codec:
         for digit in encoded:
             stock = stock + digit
             # il ne peut y avoir deux Leafs qui ont le même code binaire
-            if stock in self.dic: 
+            if stock in self.dic:
                 decode = decode + self.dic[stock]
                 stock = ""
         if stock:
-            raise TypeError # il ne peut y avoir aucune correspondance
+            raise TypeError  # il ne peut y avoir aucune correspondance
         return decode
 
     def encode_bin(self, text: str):
@@ -182,9 +182,9 @@ class Codec:
             number = int(encoded[i*8:(i+1)*8], base=2)
             Numbers.append(number)
         fin = len(encoded)//8 - 1
-        if encoded[(fin+1)*8:] == '': # cas où on a un multiple de 8
-            Numbers.append(0) #Pour plus de généralité on ajoute deux valeurs
-            Numbers.append(0) # elle seront compris comme '' au décodage
+        if encoded[(fin+1)*8:] == '':  # cas où on a un multiple de 8
+            Numbers.append(0)  # Pour plus de généralité on ajoute deux valeurs
+            Numbers.append(0)  # elle seront compris comme '' au décodage
         else:
             number = int(encoded[(fin+1)*8:], base=2)
             # On enregistre la longueurde la dernière découpe pour
