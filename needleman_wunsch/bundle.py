@@ -13,23 +13,23 @@ def iter_rule(datfile: '.txt'):
     itérateur qui parcoure le fichier texte et 
     effectue la comparaison de chaine sur les deux premières lignes qu'il trouve
     """
-    with open(datfile, 'r') as f:
+    with open(datfile, 'r') as f: 
         string1 = ""
         string2 = ""
         for line in f:
-            if line == '' or line == ' ' or line == '\n':
+            if line == '' or line == ' ' or line == '\n': # on passe si la liste est vide 
                 pass
-            elif string1 == '':
+            elif string1 == '': # on stocke la première ligne
                 string1 = line
-            elif string2 == '':
+            elif string2 == '': # on stocke la seconde ligne
                 string2 = line
 
                 ruler = Ruler(string1, string2)
-                string1, string2 = '', ''
+                string1, string2 = '', '' # on vide le stockage
                 ruler.compute()
                 top, bottom = ruler.report()
 
-                yield ruler.distance, top, bottom
+                yield ruler.distance, top, bottom 
 
 
 def affichage(datfile: '.txt'):

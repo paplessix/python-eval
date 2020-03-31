@@ -1,7 +1,7 @@
 """
 A module that implement the huffman coding algorithm,
 with to main class : TreeBuilder that construct the coding tree, 
-and Codec that create an object that code and decode text
+and Codec that create an object that code and decode text using this tree 
 
 """
 
@@ -58,6 +58,7 @@ def deci_bin(decimal: int, size=8):
 
 class Node:
     def __init__(self, NodeL: 'Node', NodeR: 'Node'):
+        # a Node is describe with its relation to its children
         self.NodeL = NodeL
         self.NodeR = NodeR
         # a Node weight is the sum of its children's
@@ -87,14 +88,14 @@ class TreeBuilder:
         tree = []
         for carac, weight in self.caracs:
             tree.append(Leaf(carac, weight))
-        tree = sorted(tree, key=lambda value: value.weight)
+        tree = sorted(tree, key=lambda value: value.weight) # keep it sorted
         working_nodes = sorted(tree, key=lambda value: value.weight)
         while len(working_nodes) > 1:
             nodeL = working_nodes.pop(0)
             nodeR = working_nodes.pop(0)
             node = Node(nodeL, nodeR)
             tree.append(node)
-            # insert the node at the right place in term of sorted weight
+            # insert the node at the "right place in" term of sorted weight
             working_nodes.insert(index_pos(working_nodes, node.weight), node)
         return tree
 
@@ -124,7 +125,7 @@ class Codec:
         self.binary_tree = binary_tree
 
     def root_finder(self):
-        """Module that returns the top Node of the Tree
+        """Module that returns the top Node of the Tree, needed to know where to start the algorithm
         """
         return max(self.binary_tree, key=lambda x: x.weight)
 
@@ -135,7 +136,7 @@ class Codec:
         """
         dic = {}
         walk = ''
-        parcours(self.root, walk, dic)
+        parcours(self.root, walk, dic) # lancement construction dictionnaire
         return dic
 
     dic = property(dic_builder)
@@ -163,11 +164,12 @@ class Codec:
         decode = ""
         for digit in encoded:
             stock = stock + digit
-            if stock in self.dic:
+            # il ne peut y avoir deux Leafs qui ont le même code binaire
+            if stock in self.dic: 
                 decode = decode + self.dic[stock]
                 stock = ""
         if stock:
-            raise TypeError
+            raise TypeError # il ne peut y avoir aucune correspondance
         return decode
 
     def encode_bin(self, text: str):
@@ -180,9 +182,9 @@ class Codec:
             number = int(encoded[i*8:(i+1)*8], base=2)
             Numbers.append(number)
         fin = len(encoded)//8 - 1
-        if encoded[(fin+1)*8:] == '':
-            Numbers.append(0)
-            Numbers.append(0)
+        if encoded[(fin+1)*8:] == '': # cas où on a un multiple de 8
+            Numbers.append(0) #Pour plus de généralité on ajoute deux valeurs
+            Numbers.append(0) # elle seront compris comme '' au décodage
         else:
             number = int(encoded[(fin+1)*8:], base=2)
             # On enregistre la longueurde la dernière découpe pour
@@ -194,7 +196,7 @@ class Codec:
         return encoded_bin
 
     def decode_bin(self, encoded_bin: bytes):
-        """function that encode according to huffman algorithm 
+        """function that decode according to huffman algorithm 
         from binary to string
         """
         encoded_deci = unpack('B'*len(encoded_bin), encoded_bin)

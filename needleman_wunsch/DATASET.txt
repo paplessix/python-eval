@@ -1,0 +1,15 @@
+
+abcdefghi
+abcdfghi
+
+
+
+abcdef
+
+abcdfg
+ACGT
+
+
+ACCT
+
+ligne qui donne un total impair
